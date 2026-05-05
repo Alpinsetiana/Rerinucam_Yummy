@@ -80,14 +80,14 @@
 
         /* --- JUDUL ESTETIK --- */
         .main-title-wrapper {
-            position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
+            position: absolute; top: 8%; left: 50%; transform: translateX(-50%);
             text-align: center; z-index: 45; pointer-events: none; width: 100%;
             transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .main-title-wrapper.hide { opacity: 0; transform: translate(-50%, -40px); }
         .main-title {
-            font-family: 'Cinzel', serif; font-size: 3rem; color: var(--pink-deep);
-            letter-spacing: 12px; text-transform: uppercase; font-weight: 700;
+            font-family: 'Cinzel', serif; font-size: 2rem; color: var(--pink-deep);
+            letter-spacing: 6px; text-transform: uppercase; font-weight: 700;
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
             animation: glowPulse 3s infinite alternate; 
         }
@@ -98,7 +98,7 @@
 
         /* --- LOGO PUSAT --- */
         .center-core {
-            position: absolute; width: 150px; height: 150px; border-radius: 50%; z-index: 50;
+            position: absolute; width: 120px; height: 120px; border-radius: 50%; z-index: 50;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             border: 2px solid var(--pink-deep);
@@ -107,23 +107,21 @@
         }
         .center-core:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(216, 27, 96, 0.25); }
         .center-core:active { transform: scale(0.95); }
-        .core-logo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 5px; border: 2px solid var(--white); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .core-text { font-family: 'Cinzel', serif; font-size: 0.85rem; color: var(--pink-deep); letter-spacing: 2px; text-transform: uppercase; font-weight: 700;}
+        .core-logo { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-bottom: 5px; border: 2px solid var(--white); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .core-text { font-family: 'Cinzel', serif; font-size: 0.75rem; color: var(--pink-deep); letter-spacing: 2px; text-transform: uppercase; font-weight: 700;}
 
-        /* --- ORBITAL MENU ITEMS (DISESUAIKAN UNTUK POSTER POTRET) --- */
+        /* --- ORBITAL MENU ITEMS --- */
         .orbit-item {
             position: absolute; 
-            width: 105px; /* Lebar kartu diatur untuk poster */
-            height: 150px; /* Tinggi kartu diperbesar untuk proporsi vertikal */
+            width: 90px; height: 130px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             opacity: var(--o, 0); transform: translate(var(--tx, 0), var(--ty, 0)) scale(var(--s, 0));
             transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; z-index: 40;
         }
 
         .orbit-img-wrap {
-            width: 105px; height: 150px; 
-            border-radius: 12px; /* Dibuat kotak melengkung, bukan bulat lagi */
-            background: var(--white); border: 2px solid var(--pink-deep);
+            width: 100%; height: 100%; 
+            border-radius: 12px; background: var(--white); border: 2px solid var(--pink-deep);
             overflow: hidden; box-shadow: 0 10px 20px rgba(216, 27, 96, 0.15); 
             transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1); position: relative;
         }
@@ -135,58 +133,57 @@
 
         .orbit-label {
             position: absolute; 
-            top: 160px; /* Diturunkan karena kartunya sekarang lebih panjang */
+            top: 140px; 
             left: 50%; transform: translateX(-50%);
-            font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; color: var(--pink-deep); white-space: nowrap; width: max-content;
-            background: var(--white); padding: 5px 12px; border-radius: 15px; border: 1px solid var(--glass-border); box-shadow: 0 5px 15px rgba(216, 27, 96, 0.1);
+            font-family: 'Cinzel', serif; font-size: 0.75rem; font-weight: 700; color: var(--pink-deep); white-space: nowrap; width: max-content;
+            background: var(--white); padding: 5px 10px; border-radius: 12px; border: 1px solid var(--glass-border); box-shadow: 0 5px 15px rgba(216, 27, 96, 0.1);
             pointer-events: none; transition: 0.3s;
         }
         .orbit-item:hover .orbit-label { background: var(--pink-deep); color: var(--white); }
 
         /* --- SOCIAL MEDIA ORBITS --- */
         .socmed-btn {
-            position: absolute; width: 50px; height: 50px; border-radius: 50%; background: var(--white);
+            position: absolute; width: 45px; height: 45px; border-radius: 50%; background: var(--white);
             border: 1px solid var(--glass-border); box-shadow: 0 5px 15px rgba(216, 27, 96, 0.1); color: var(--pink-deep); 
-            display: flex; justify-content: center; align-items: center; font-size: 1.2rem; text-decoration: none; z-index: 45; 
+            display: flex; justify-content: center; align-items: center; font-size: 1.1rem; text-decoration: none; z-index: 45; 
             opacity: var(--o, 0); transform: translate(var(--tx, 0), var(--ty, 0)) scale(var(--s, 0));
             transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s, color 0.3s, box-shadow 0.3s, opacity 0.6s;
         }
         .socmed-btn:hover { background: var(--pink-deep); color: var(--white); border-color: var(--pink-deep); box-shadow: 0 10px 20px rgba(216, 27, 96, 0.25); --s: 1.15 !important; }
         .socmed-btn:active { --s: 0.9 !important; }
 
-        /* --- DETAIL VIEW PANEL (DISESUAIKAN UNTUK POSTER) --- */
+        /* --- DETAIL VIEW PANEL --- */
         .detail-panel {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); 
-            width: 90%; max-width: 450px; /* Dibuat sedikit lebih ramping untuk poster vertikal */
-            max-height: 90vh; overflow-y: auto; /* Bisa di-scroll jika layar kekecilan */
+            width: 90%; max-width: 400px; 
+            max-height: 85vh; overflow-y: auto; 
             background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border); border-radius: 20px; padding: 25px; text-align: center;
+            border: 1px solid var(--glass-border); border-radius: 20px; padding: 25px; 
             opacity: 0; visibility: hidden; z-index: 100; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 30px 60px rgba(216, 27, 96, 0.25);
         }
         
-        /* Sembunyikan scrollbar bawaan agar rapi */
         .detail-panel::-webkit-scrollbar { width: 0px; }
-
         .detail-panel.active { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
 
-        /* Gambar Poster tidak dipotong (object-fit: contain) */
+        /* Pembungkus Konten Detail untuk Flexbox Responsive */
+        .dt-content-wrap {
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+        }
+
         .dt-img { 
-            width: 100%; 
-            height: auto; 
-            max-height: 380px; 
-            object-fit: contain; /* Memastikan teks pada poster terbaca semua */
-            border-radius: 10px; margin-bottom: 20px; 
-            background: transparent; 
+            width: 100%; height: auto; max-height: 320px; object-fit: contain; 
+            border-radius: 10px; margin-bottom: 20px; background: transparent; 
         }
         
-        .dt-title { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--pink-deep); margin-bottom: 5px; font-weight: 700; }
-        .dt-price { font-size: 1.3rem; font-weight: 600; letter-spacing: 2px; margin-bottom: 15px; color: var(--text-dark); }
+        .dt-text-wrap { width: 100%; display: flex; flex-direction: column; justify-content: center; }
+        .dt-title { font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--pink-deep); margin-bottom: 5px; font-weight: 700; }
+        .dt-price { font-size: 1.2rem; font-weight: 600; letter-spacing: 2px; margin-bottom: 15px; color: var(--text-dark); }
         .dt-desc { font-size: 0.95rem; color: #666; line-height: 1.5; margin-bottom: 25px; }
 
         .btn-order {
-            display: inline-flex; align-items: center; gap: 10px; padding: 12px 25px; background: var(--pink-deep); color: var(--white);
+            display: inline-flex; justify-content: center; align-items: center; gap: 10px; padding: 12px 25px; background: var(--pink-deep); color: var(--white);
             text-decoration: none; font-weight: 600; border-radius: 50px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
-            box-shadow: 0 10px 20px rgba(216, 27, 96, 0.2); margin-bottom: 10px;
+            box-shadow: 0 10px 20px rgba(216, 27, 96, 0.2); 
         }
         .btn-order:hover { box-shadow: 0 15px 30px rgba(216, 27, 96, 0.4); transform: translateY(-3px); background: #c2185b; }
         .btn-order:active { transform: scale(0.95); }
@@ -201,11 +198,34 @@
         }
         @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-        @media (max-width: 600px) {
-            .main-title-wrapper { top: 6%; }
-            .main-title { font-size: 1.6rem; letter-spacing: 4px; }
-            .dt-img { max-height: 320px; } /* Sesuaikan tinggi agar tidak memakan layar HP */
+        /* ====================================================
+           MEDIA QUERIES (DESKTOP / LAPTOP LAYOUT OPTIMIZATION) 
+           ==================================================== */
+        @media (min-width: 768px) {
+            .main-title-wrapper { top: 10%; }
+            .main-title { font-size: 3.5rem; letter-spacing: 15px; }
+
+            /* Perbesar Logo Pusat di Desktop */
+            .center-core { width: 180px; height: 180px; }
+            .core-logo { width: 90px; height: 90px; }
+            .core-text { font-size: 1rem; }
+
+            /* Perbesar Ukuran Kartu Orbit di Desktop */
+            .orbit-item { width: 140px; height: 200px; }
+            .orbit-img-wrap { border-radius: 15px; }
+            .orbit-label { top: 215px; font-size: 0.95rem; padding: 8px 18px; }
+
+            .socmed-btn { width: 60px; height: 60px; font-size: 1.5rem; }
+
+            /* Layout Detail Panel Berdampingan di Desktop */
+            .detail-panel { max-width: 800px; padding: 40px; }
+            .dt-content-wrap { flex-direction: row; text-align: left; gap: 40px; }
+            .dt-img { width: 45%; max-height: 450px; margin-bottom: 0; }
+            .dt-text-wrap { width: 55%; align-items: flex-start; }
+            .dt-title { font-size: 2.5rem; }
+            .btn-order { align-self: flex-start; } /* Tombol rata kiri */
         }
+
     </style>
 </head>
 <body>
@@ -237,11 +257,20 @@
         <!-- PANEL DETAIL -->
         <div class="detail-panel" id="detail-view">
             <button class="btn-close interactive-el" id="close-btn"><i class="fas fa-times"></i></button>
-            <img src="" alt="" class="dt-img" id="d-img">
-            <h2 class="dt-title" id="d-title">Nama Menu</h2>
-            <div class="dt-price" id="d-price">Harga</div>
-            <p class="dt-desc" id="d-desc">Deskripsi</p>
-            <a href="#" target="_blank" class="btn-order interactive-el" id="d-wa"><i class="fab fa-whatsapp"></i> Pesan Sekarang</a>
+            
+            <div class="dt-content-wrap">
+                <!-- Foto Poster Kiri -->
+                <img src="" alt="" class="dt-img" id="d-img">
+                
+                <!-- Deskripsi Kanan (Pada Desktop) -->
+                <div class="dt-text-wrap">
+                    <h2 class="dt-title" id="d-title">Nama Menu</h2>
+                    <div class="dt-price" id="d-price">Harga</div>
+                    <p class="dt-desc" id="d-desc">Deskripsi</p>
+                    <a href="#" target="_blank" class="btn-order interactive-el" id="d-wa"><i class="fab fa-whatsapp"></i> Pesan Sekarang</a>
+                </div>
+            </div>
+            
         </div>
     </div>
 
@@ -259,25 +288,25 @@
             }
         });
 
-        // === DATA MENU (DISESUAIKAN DENGAN POSTER SANDOLICUIS ROLL) ===
+        // === DATA MENU ===
         const waNumber = "628123456789"; 
         const menuData = [
             { 
                 name: "Sandolicuis", 
                 price: "10k-12k", 
-                img: "menu 1.jpeg", // GANTI NAMA FILE INI DENGAN NAMA FOTO POSTER KAMU
+                img: "menu 1.jpeg", 
                 desc: "Manisnya pas, lembutnya berbekas. Sandolicuis Roll, ceriakan setiap momenmu!" 
             },
             { 
-                name: "Samyang roll", 
+                name: "Samyang Roll", 
                 price: "10k-15k", 
-                img: "menu 2.jpeg", // GANTI NAMA FILE INI DENGAN NAMA FOTO POSTER KAMU
+                img: "menu 2.jpeg", 
                 desc: "Sensasi pedas nendang dalam satu gulungan nikmat. Berani taklukkan pedasnya Samyang Roll?" 
             },
             { 
                 name: "Sandwich", 
                 price: "8k-12k", 
-                img: "menu 3.jpeg", // GANTI NAMA FILE INI DENGAN NAMA FOTO POSTER KAMU
+                img: "menu 3.jpeg", 
                 desc: "Perpaduan daging gurih, sayur segar, dan saus rahasia dalam setangkup roti lembut. Kenyangnya pas, rasanya fantastis!" 
             }
         ];
@@ -316,9 +345,10 @@
                 mainTitle.classList.remove('hide'); 
             }
             
-            // Jari-jari orbit sedikit diperbesar agar kartu vertikal tidak menabrak logo
-            const radiusMenu = window.innerWidth < 600 ? 150 : 240; 
-            const radiusSosmed = window.innerWidth < 600 ? 90 : 120; 
+            // Perhitungan Radius Dinamis: Membesar jika terdeteksi layar Desktop (>768px)
+            const isDesktop = window.innerWidth > 768;
+            const radiusMenu = isDesktop ? 320 : (window.innerWidth < 600 ? 150 : 220); 
+            const radiusSosmed = isDesktop ? 160 : (window.innerWidth < 600 ? 90 : 120); 
 
             if (isMenuOpen) {
                 coreBtn.style.transform = 'scale(0.8)';
@@ -369,7 +399,6 @@
             document.getElementById('d-price').innerText = data.price;
             document.getElementById('d-desc').innerText = data.desc;
             
-            // Tambahkan error handler untuk gambar (kalau file belum ada, pakai placeholder estetik)
             const imgEl = document.getElementById('d-img');
             imgEl.src = data.img;
             imgEl.onerror = function() {
