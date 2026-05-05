@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rerunicam Yummy | Sandolicuis Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Palet Warna Cream & Pink Estetik */
+            --cream-light: #FFFBF0;  
+            --cream-mid: #FDF5E6;    
+            --cream-dark: #F5E8D3;   
+            --pink-deep: #D81B60;    
+            --white: #FFFFFF;
+            --text-dark: #5A3A42;    
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(216, 27, 96, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark); 
+            overflow: hidden;
+            width: 100vw; height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+            
+            /* Latar Belakang Gradasi Mengalir */
+            background: linear-gradient(-45deg, var(--cream-light), var(--cream-mid), var(--cream-dark), #FFF5EE);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- AMBIENT BLOBS --- */
+        .ambient-blob {
+            position: absolute; filter: blur(90px); z-index: 0; opacity: 0.5;
+            border-radius: 50%; animation: floatBlob 20s infinite alternate ease-in-out; pointer-events: none;
+        }
+
+        .blob-1 { width: 400px; height: 400px; background: rgba(255, 209, 220, 0.6); top: -10%; left: -10%; animation-delay: 0s; }
+        .blob-2 { width: 500px; height: 500px; background: rgba(255, 228, 225, 0.6); bottom: -20%; right: -10%; animation-delay: -5s; }
+        .blob-3 { width: 300px; height: 300px; background: rgba(255, 240, 245, 0.8); top: 30%; left: 40%; animation-delay: -10s; }
+
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(80px, -50px) scale(1.2); }
+        }
+
+        /* --- FISIKA CANVAS BACKGROUND --- */
+        #physics-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+
+        /* --- EFEK KLIK (PINK SUPERNOVA) --- */
+        .click-burst {
+            position: fixed; top: 0; left: 0; width: 15px; height: 15px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9); box-shadow: 0 0 20px var(--pink-deep), 0 0 40px rgba(255, 255, 255, 0.8);
+            transform: translate(-50%, -50%) scale(1); pointer-events: none; z-index: 99999;
+            animation: burst 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .click-burst::after {
+            content: ''; position: absolute; top: 50%; left: 50%;
+            width: 100%; height: 100%; border: 2px solid var(--pink-deep); border-radius: 50%;
+            transform: translate(-50%, -50%); animation: ripple 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes burst { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }
+        @keyframes ripple { 0% { width: 15px; height: 15px; opacity: 1; border-width: 4px; } 100% { width: 150px; height: 150px; opacity: 0; border-width: 0px; } }
+
+        .app-container {
+            position: relative; z-index: 10; width: 100vw; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* --- JUDUL ESTETIK --- */
+        .main-title-wrapper {
+            position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
+            text-align: center; z-index: 45; pointer-events: none; width: 100%;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .main-title-wrapper.hide { opacity: 0; transform: translate(-50%, -40px); }
+        .main-title {
+            font-family: 'Cinzel', serif; font-size: 3rem; color: var(--pink-deep);
+            letter-spacing: 12px; text-transform: uppercase; font-weight: 700;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            animation: glowPulse 3s infinite alternate; 
+        }
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); opacity: 0.85; }
+            100% { text-shadow: 0 0 30px rgba(216, 27, 96, 0.3), 0 0 15px rgba(255, 255, 255, 1); opacity: 1; }
+        }
+
+        /* --- LOGO PUSAT --- */
+        .center-core {
+            position: absolute; width: 150px; height: 150px; border-radius: 50%; z-index: 50;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 2px solid var(--pink-deep);
+            box-shadow: 0 10px 30px rgba(216, 27, 96, 0.1), inset 0 0 20px rgba(255, 255, 255, 0.8);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer;
+        }
+        .center-core:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(216, 27, 96, 0.25); }
+        .center-core:active { transform: scale(0.95); }
+        .core-logo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 5px; border: 2px solid var(--white); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .core-text { font-family: 'Cinzel', serif; font-size: 0.85rem; color: var(--pink-deep); letter-spacing: 2px; text-transform: uppercase; font-weight: 700;}
+
+        /* --- ORBITAL MENU ITEMS (DISESUAIKAN UNTUK POSTER POTRET) --- */
+        .orbit-item {
+            position: absolute; 
+            width: 105px; /* Lebar kartu diatur untuk poster */
+            height: 150px; /* Tinggi kartu diperbesar untuk proporsi vertikal */
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: var(--o, 0); transform: translate(var(--tx, 0), var(--ty, 0)) scale(var(--s, 0));
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; z-index: 40;
+        }
+
+        .orbit-img-wrap {
+            width: 105px; height: 150px; 
+            border-radius: 12px; /* Dibuat kotak melengkung, bukan bulat lagi */
+            background: var(--white); border: 2px solid var(--pink-deep);
+            overflow: hidden; box-shadow: 0 10px 20px rgba(216, 27, 96, 0.15); 
+            transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1); position: relative;
+        }
+
+        .orbit-img-wrap img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: 0.3s; }
+        .orbit-item:hover .orbit-img-wrap { transform: scale(1.1); box-shadow: 0 15px 30px rgba(216, 27, 96, 0.3); border-color: var(--pink-deep); }
+        .orbit-item:hover .orbit-img-wrap img { opacity: 1; }
+        .orbit-item:active .orbit-img-wrap { transform: scale(0.95); }
+
+        .orbit-label {
+            position: absolute; 
+            top: 160px; /* Diturunkan karena kartunya sekarang lebih panjang */
+            left: 50%; transform: translateX(-50%);
+            font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700; color: var(--pink-deep); white-space: nowrap; width: max-content;
+            background: var(--white); padding: 5px 12px; border-radius: 15px; border: 1px solid var(--glass-border); box-shadow: 0 5px 15px rgba(216, 27, 96, 0.1);
+            pointer-events: none; transition: 0.3s;
+        }
+        .orbit-item:hover .orbit-label { background: var(--pink-deep); color: var(--white); }
+
+        /* --- SOCIAL MEDIA ORBITS --- */
+        .socmed-btn {
+            position: absolute; width: 50px; height: 50px; border-radius: 50%; background: var(--white);
+            border: 1px solid var(--glass-border); box-shadow: 0 5px 15px rgba(216, 27, 96, 0.1); color: var(--pink-deep); 
+            display: flex; justify-content: center; align-items: center; font-size: 1.2rem; text-decoration: none; z-index: 45; 
+            opacity: var(--o, 0); transform: translate(var(--tx, 0), var(--ty, 0)) scale(var(--s, 0));
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s, color 0.3s, box-shadow 0.3s, opacity 0.6s;
+        }
+        .socmed-btn:hover { background: var(--pink-deep); color: var(--white); border-color: var(--pink-deep); box-shadow: 0 10px 20px rgba(216, 27, 96, 0.25); --s: 1.15 !important; }
+        .socmed-btn:active { --s: 0.9 !important; }
+
+        /* --- DETAIL VIEW PANEL (DISESUAIKAN UNTUK POSTER) --- */
+        .detail-panel {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); 
+            width: 90%; max-width: 450px; /* Dibuat sedikit lebih ramping untuk poster vertikal */
+            max-height: 90vh; overflow-y: auto; /* Bisa di-scroll jika layar kekecilan */
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 20px; padding: 25px; text-align: center;
+            opacity: 0; visibility: hidden; z-index: 100; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 30px 60px rgba(216, 27, 96, 0.25);
+        }
+        
+        /* Sembunyikan scrollbar bawaan agar rapi */
+        .detail-panel::-webkit-scrollbar { width: 0px; }
+
+        .detail-panel.active { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+
+        /* Gambar Poster tidak dipotong (object-fit: contain) */
+        .dt-img { 
+            width: 100%; 
+            height: auto; 
+            max-height: 380px; 
+            object-fit: contain; /* Memastikan teks pada poster terbaca semua */
+            border-radius: 10px; margin-bottom: 20px; 
+            background: transparent; 
+        }
+        
+        .dt-title { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--pink-deep); margin-bottom: 5px; font-weight: 700; }
+        .dt-price { font-size: 1.3rem; font-weight: 600; letter-spacing: 2px; margin-bottom: 15px; color: var(--text-dark); }
+        .dt-desc { font-size: 0.95rem; color: #666; line-height: 1.5; margin-bottom: 25px; }
+
+        .btn-order {
+            display: inline-flex; align-items: center; gap: 10px; padding: 12px 25px; background: var(--pink-deep); color: var(--white);
+            text-decoration: none; font-weight: 600; border-radius: 50px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(216, 27, 96, 0.2); margin-bottom: 10px;
+        }
+        .btn-order:hover { box-shadow: 0 15px 30px rgba(216, 27, 96, 0.4); transform: translateY(-3px); background: #c2185b; }
+        .btn-order:active { transform: scale(0.95); }
+
+        .btn-close { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #999; font-size: 1.5rem; cursor: pointer; transition: 0.3s; z-index: 101;}
+        .btn-close:hover { color: var(--pink-deep); transform: rotate(90deg); }
+
+        .instruction {
+            position: absolute; bottom: 40px; width: 100%; text-align: center; font-size: 0.8rem; letter-spacing: 3px;
+            color: var(--pink-deep); text-transform: uppercase; font-weight: 600;
+            animation: pulse 2s infinite; pointer-events: none; transition: opacity 0.5s;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        @media (max-width: 600px) {
+            .main-title-wrapper { top: 6%; }
+            .main-title { font-size: 1.6rem; letter-spacing: 4px; }
+            .dt-img { max-height: 320px; } /* Sesuaikan tinggi agar tidak memakan layar HP */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Latar Belakang Animasi Aurora & Canvas -->
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+    <div class="ambient-blob blob-3"></div>
+    <canvas id="physics-bg"></canvas>
+
+    <div class="app-container" id="app">
+        <!-- NAMA BRAND -->
+        <div class="main-title-wrapper" id="main-title">
+            <h1 class="main-title">Rerunicam Yummy</h1>
+        </div>
+        
+        <div class="instruction" id="guide-text">Klik Logo Untuk Membuka Menu</div>
+
+        <!-- LOGO UTAMA -->
+        <div class="center-core interactive-el" id="core-btn">
+            <img src="foto.jpeg" alt="Logo" class="core-logo">
+            <span class="core-text">Menu</span>
+        </div>
+
+        <!-- SOCIAL MEDIA -->
+        <a href="https://www.instagram.com/rerinucam_yummy?igsh=ajBxNW96YnY0NHl2" target="_blank" class="socmed-btn interactive-el" id="ig-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://wa.me/message/V4UCVY2U3O4QL1" target="_blank" class="socmed-btn interactive-el" id="wa-btn"><i class="fab fa-whatsapp"></i></a>
+
+        <!-- PANEL DETAIL -->
+        <div class="detail-panel" id="detail-view">
+            <button class="btn-close interactive-el" id="close-btn"><i class="fas fa-times"></i></button>
+            <img src="" alt="" class="dt-img" id="d-img">
+            <h2 class="dt-title" id="d-title">Nama Menu</h2>
+            <div class="dt-price" id="d-price">Harga</div>
+            <p class="dt-desc" id="d-desc">Deskripsi</p>
+            <a href="#" target="_blank" class="btn-order interactive-el" id="d-wa"><i class="fab fa-whatsapp"></i> Pesan Sekarang</a>
+        </div>
+    </div>
+
+    <script>
+        // === EFEK KLIK (SUPERNOVA) ===
+        document.addEventListener('click', (e) => {
+            const isInteractive = e.target.closest('.interactive-el') || e.target.closest('.orbit-item');
+            if (isInteractive) {
+                const burst = document.createElement('div');
+                burst.className = 'click-burst';
+                burst.style.left = e.clientX + 'px';
+                burst.style.top = e.clientY + 'px';
+                document.body.appendChild(burst);
+                setTimeout(() => burst.remove(), 600);
+            }
+        });
+
+        // === DATA MENU (DISESUAIKAN DENGAN POSTER SANDOLICUIS ROLL) ===
+        const waNumber = "628123456789"; 
+        const menuData = [
+            { 
+                name: "Sandolicuis", 
+                price: "10k-12k", 
+                img: "menu 1.jpeg", // GANTI NAMA FILE INI DENGAN NAMA FOTO POSTER KAMU
+                desc: "Manisnya pas, lembutnya berbekas. Sandolicuis Roll, ceriakan setiap momenmu!" 
+            },
+            { 
+                name: "Samyang roll", 
+                price: "10k-15k", 
+                img: "menu 2.jpeg", // GANTI NAMA FILE INI DENGAN NAMA FOTO POSTER KAMU
+                desc: "Sensasi pedas nendang dalam satu gulungan nikmat. Berani taklukkan pedasnya Samyang Roll?" 
+            },
+            { 
+                name: "Sandwich", 
+                price: "8k-12k", 
+                img: "menu 3.jpeg", // GANTI NAMA FILE INI DENGAN NAMA FOTO POSTER KAMU
+                desc: "Perpaduan daging gurih, sayur segar, dan saus rahasia dalam setangkup roti lembut. Kenyangnya pas, rasanya fantastis!" 
+            }
+        ];
+
+        // === LOGIKA MENU ORBIT ===
+        const app = document.getElementById('app');
+        const coreBtn = document.getElementById('core-btn');
+        const guideText = document.getElementById('guide-text');
+        const mainTitle = document.getElementById('main-title'); 
+        const igBtn = document.getElementById('ig-btn');
+        const waBtn = document.getElementById('wa-btn');
+        
+        let isMenuOpen = false;
+        let menuElements = [];
+
+        menuData.forEach((item, index) => {
+            let el = document.createElement('div');
+            el.className = 'orbit-item';
+            el.innerHTML = `
+                <div class="orbit-img-wrap"><img src="${item.img}" alt="${item.name}"></div>
+                <div class="orbit-label">${item.name}</div>
+            `;
+            el.addEventListener('click', () => openDetail(item));
+            app.appendChild(el);
+            menuElements.push(el);
+        });
+
+        coreBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            
+            if (isMenuOpen) {
+                guideText.style.opacity = '0';
+                mainTitle.classList.add('hide'); 
+            } else {
+                guideText.style.opacity = '1';
+                mainTitle.classList.remove('hide'); 
+            }
+            
+            // Jari-jari orbit sedikit diperbesar agar kartu vertikal tidak menabrak logo
+            const radiusMenu = window.innerWidth < 600 ? 150 : 240; 
+            const radiusSosmed = window.innerWidth < 600 ? 90 : 120; 
+
+            if (isMenuOpen) {
+                coreBtn.style.transform = 'scale(0.8)';
+                coreBtn.style.boxShadow = '0 0 30px rgba(255,255,255,0.8)';
+                document.querySelector('.core-text').innerText = 'TUTUP';
+
+                menuElements.forEach((el, index) => {
+                    const angle = (index / menuElements.length) * (2 * Math.PI) - (Math.PI / 2);
+                    const x = Math.cos(angle) * radiusMenu;
+                    const y = Math.sin(angle) * radiusMenu;
+                    el.style.setProperty('--tx', `${x}px`);
+                    el.style.setProperty('--ty', `${y}px`);
+                    el.style.setProperty('--s', `1`);
+                    el.style.setProperty('--o', `1`);
+                    el.style.transitionDelay = `${index * 0.15}s`; 
+                });
+
+                igBtn.style.setProperty('--tx', `${Math.cos(Math.PI*0.8) * radiusSosmed}px`);
+                igBtn.style.setProperty('--ty', `${Math.sin(Math.PI*0.8) * radiusSosmed}px`);
+                igBtn.style.setProperty('--s', `1`); igBtn.style.setProperty('--o', `1`);
+
+                waBtn.style.setProperty('--tx', `${Math.cos(Math.PI*0.2) * radiusSosmed}px`);
+                waBtn.style.setProperty('--ty', `${Math.sin(Math.PI*0.2) * radiusSosmed}px`);
+                waBtn.style.setProperty('--s', `1`); waBtn.style.setProperty('--o', `1`);
+
+            } else {
+                coreBtn.style.transform = 'scale(1)';
+                coreBtn.style.boxShadow = '0 10px 30px rgba(216, 27, 96, 0.1), inset 0 0 20px rgba(255, 255, 255, 0.8)';
+                document.querySelector('.core-text').innerText = 'MENU';
+
+                menuElements.forEach(el => {
+                    el.style.setProperty('--tx', `0px`); el.style.setProperty('--ty', `0px`);
+                    el.style.setProperty('--s', `0`); el.style.setProperty('--o', `0`); el.style.transitionDelay = `0s`;
+                });
+
+                igBtn.style.setProperty('--tx', `0px`); igBtn.style.setProperty('--ty', `0px`);
+                igBtn.style.setProperty('--s', `0`); igBtn.style.setProperty('--o', `0`);
+
+                waBtn.style.setProperty('--tx', `0px`); waBtn.style.setProperty('--ty', `0px`);
+                waBtn.style.setProperty('--s', `0`); waBtn.style.setProperty('--o', `0`);
+            }
+        });
+
+        // === LOGIKA DETAIL ===
+        const detailView = document.getElementById('detail-view');
+        function openDetail(data) {
+            document.getElementById('d-title').innerText = data.name;
+            document.getElementById('d-price').innerText = data.price;
+            document.getElementById('d-desc').innerText = data.desc;
+            
+            // Tambahkan error handler untuk gambar (kalau file belum ada, pakai placeholder estetik)
+            const imgEl = document.getElementById('d-img');
+            imgEl.src = data.img;
+            imgEl.onerror = function() {
+                this.src = "https://via.placeholder.com/400x600?text=Poster+Menu";
+            };
+            
+            const msg = `Halo, saya tertarik dengan menu *${data.name}* seharga ${data.price}. Apakah bisa dipesan sekarang?`;
+            document.getElementById('d-wa').href = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+            
+            detailView.classList.add('active');
+        }
+        document.getElementById('close-btn').addEventListener('click', () => { detailView.classList.remove('active'); });
+
+        // === ENGINE FISIKA CANVAS (ROSE GOLD POPPING BUBBLES) ===
+        const canvas = document.getElementById('physics-bg');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+
+        const particleColor = '255, 150, 130'; 
+
+        class Particle {
+            constructor() { this.reset(true); }
+
+            reset(initial = false) {
+                this.radius = Math.random() * 4 + 2;
+                this.x = Math.random() * width;
+                this.y = initial ? Math.random() * height : height + this.radius + Math.random() * 50;
+                this.speedY = Math.random() * 1.5 + 0.5; 
+                this.angle = Math.random() * 360;
+                this.spin = Math.random() * 0.03;
+                this.alpha = Math.random() * 0.6 + 0.2;
+                
+                this.isPopping = false;
+                this.popRadius = this.radius;
+                this.maxPopRadius = this.radius * (Math.random() * 2 + 3); 
+                this.popAlpha = this.alpha;
+            }
+
+            update() {
+                if (this.isPopping) {
+                    this.popRadius += 0.6; 
+                    this.popAlpha -= 0.015; 
+                    this.y -= this.speedY * 0.5; 
+                    
+                    if (this.popAlpha <= 0) { this.reset(); }
+                } else {
+                    this.y -= this.speedY; 
+                    this.x += Math.sin(this.angle) * 0.8; 
+                    this.angle += this.spin;
+
+                    if (this.y < height - 100 && this.y > 100 && Math.random() < 0.003) {
+                        this.isPopping = true;
+                    }
+                    if (this.y + this.radius < 0) { this.reset(); }
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                if (this.isPopping) {
+                    ctx.arc(this.x, this.y, this.popRadius, 0, Math.PI * 2);
+                    ctx.strokeStyle = `rgba(${particleColor}, ${Math.max(0, this.popAlpha)})`;
+                    ctx.lineWidth = 2 * (this.popAlpha / this.alpha); 
+                    ctx.stroke();
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = `rgba(${particleColor}, ${Math.max(0, this.popAlpha)})`;
+                } else {
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${particleColor}, ${this.alpha})`; 
+                    ctx.fill();
+                    ctx.shadowBlur = 12;
+                    ctx.shadowColor = `rgba(${particleColor}, 0.6)`;
+                }
+                ctx.closePath();
+            }
+        }
+
+        const particles = [];
+        const particleCount = window.innerWidth < 600 ? 35 : 70; 
+        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+    </script>
+</body>
+</html>
